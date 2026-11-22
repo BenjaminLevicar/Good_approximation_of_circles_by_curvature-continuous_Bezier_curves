@@ -1,0 +1,105 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[slovene]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{izrek}{Izrek}[section]
+\theoremstyle{definition}
+\newtheorem{definicija}[izrek]{Definicija}
+\theoremstyle{remark}
+\newtheorem{opomba}[izrek]{Opomba}
+
+\title{Aproksimacija krožnic z Bézierjevimi krivuljami\break
+       z zvezno ukrivljenostjo}
+\author{Ime in priimek\\
+  \small Seminar pri predmetu Računalniško podprto geometrijsko oblikovanje}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+% Na kratko predstavite problem, uporabljeno metodo in glavne rezultate.
+Članek obravnava aproksimacijo krožnih lokov z Bézierjevimi krivuljami
+s poudarkom na zveznosti ukrivljenosti. Predstavljeni bodo geometrijski
+pogoji konstrukcije, merjenje aproksimacijske napake in numerični primeri.
+\end{abstract}
+
+\noindent\textbf{Ključne besede:} Bézierjeva krivulja, krožni lok,
+aproksimacija, ukrivljenost, geometrijska zveznost.
+
+\section{Uvod}
+\label{sec:uvod}
+% Opišite motivacijo, cilj seminarja in zgradbo članka.
+% Dodajte popolne bibliografske podatke izhodiščnega članka v literaturo.
+
+\section{Matematične osnove}
+\label{sec:osnove}
+
+\subsection{Bézierjeve krivulje}
+Bézierjeva krivulja stopnje $n$ s kontrolnimi točkami
+$\mathbf{b}_0,\ldots,\mathbf{b}_n\in\mathbb{R}^2$ je podana z
+\begin{equation}
+  \mathbf{b}(t)=\sum_{i=0}^{n}\mathbf{b}_i B_i^n(t),
+  \qquad B_i^n(t)=\binom{n}{i}t^i(1-t)^{n-i},
+  \qquad t\in[0,1].
+\end{equation}
+% Dopolnite lastnosti in izraze za odvode.
+
+\subsection{Ukrivljenost in geometrijska zveznost}
+Za regularno ravninsko krivuljo $\mathbf{r}(t)=(x(t),y(t))$
+je predznačena ukrivljenost enaka
+\begin{equation}
+  \kappa(t)=
+  \frac{x'(t)y''(t)-y'(t)x''(t)}
+       {\bigl(x'(t)^2+y'(t)^2\bigr)^{3/2}}.
+\end{equation}
+% Razložite pogoje G^0, G^1 in G^2 ter razliko do parametrične zveznosti.
+
+\section{Postavitev aproksimacijskega problema}
+\label{sec:problem}
+% Določite polmer, kot loka, simetrijo in robne pogoje.
+Krožni lok s središčem v izhodišču in polmerom $R>0$ opišemo kot
+\begin{equation}
+  \mathbf{c}(\varphi)=R(\cos\varphi,\sin\varphi),
+  \qquad \varphi\in[\alpha,\beta],\quad \alpha<\beta.
+\end{equation}
+% Natančno opredelite uporabljeno mero napake in dopustne krivulje.
+
+\section{Konstrukcija aproksimacijske krivulje}
+\label{sec:konstrukcija}
+\subsection{Izbira kontrolnih točk in robni pogoji}
+% Izpeljite pogoje za krajišči, tangenti in ukrivljenost.
+
+\subsection{Določitev prostih parametrov}
+% Predstavite enačbe, kriterij izbire in postopek reševanja.
+
+\section{Analiza napake}
+\label{sec:napaka}
+% Izpeljite napako in obravnavajte njene ekstreme.
+% Ločite radialno napako od drugih mer geometrijske razdalje.
+
+\section{Numerični primeri}
+\label{sec:primeri}
+% Navedite parametre, uporabljeno programsko opremo in natančnost računanja.
+% Dodajte grafe krivulj, ukrivljenosti in napake ter tabelo rezultatov.
+% Primerjajte več kotov loka in rezultate komentirajte.
+
+\section{Zaključek}
+\label{sec:zakljucek}
+% Povzemite ugotovitve, omejitve metode in možnosti nadaljnjega dela.
+
+\begin{thebibliography}{9}
+% Vzorec zapisa (odkomentirajte in dopolnite s preverjenimi podatki):
+% \bibitem{izhodišče}
+% Avtorji, \emph{Good approximation of circles by curvature-continuous
+% Bézier curves}, revija, letnik, strani, leto. DOI.
+\end{thebibliography}
+
+\end{document}
