@@ -36,8 +36,141 @@ aproksimacija, ukrivljenost, geometrijska zveznost.
 
 \section{Uvod}
 \label{sec:uvod}
-% Opišite motivacijo, cilj seminarja in zgradbo članka.
-% Dodajte popolne bibliografske podatke izhodiščnega članka v literaturo.
+Krožnice in krožni loki so pogosti gradniki v računalniško podprtem
+geometrijskem oblikovanju. V sistemih, ki uporabljajo zlepke, jih je
+priročno predstaviti v isti obliki kot druge krivulje. Ker netrivialnega
+krožnega loka s polinomsko parametrično krivuljo ne moremo predstaviti
+natančno, uporabimo aproksimacijo. V seminarju primerjamo metode za
+aproksimacijo krožnic z Bézierjevimi krivuljami stopnje tri, katerih
+odseki se stikajo z zvezno tangentno smerjo in ukrivljenostjo. Izhajamo
+iz članka Dokkena, Dæhlena, Lycheja in Mørkena~\cite{dokken1990},
+ki predstavi tri konstrukcije in analitično obravnava njihovo napako.
+Naš poudarek bo na numeričnem vrednotenju in primerjavi teh metod.
+
+Metode ocenjujemo s tremi merami, izračunanimi na ekvidistantni mreži
+parametra $t\in[0,1]$. Za $N\geq 2$ izberemo testne vrednosti
+$t_i=i/(N-1)$, $i=0,\ldots,N-1$, in označimo
+$\mathbf{p}(t_i)=(x_i,y_i)$. Pri aproksimaciji enotske krožnice
+prva mera sledi izhodiščnemu članku: uporabimo polinomsko funkcijo
+$\phi(t)=x(t)^2+y(t)^2-1$ in ocenimo njeno največjo absolutno vrednost z
+\begin{equation}
+  E_N=\max_{0\leq i<N}\bigl|x_i^2+y_i^2-1\bigr|.
+  \label{eq:uvod-napaka}
+\end{equation}
+Pri primerjavi iščemo čim manjšo vrednost $E_N$. To je vzorčena ocena
+napake, saj lahko dejanski maksimum leži med testnimi točkami.
+Količina $\phi$ ni neposredno radialna napaka: za
+$e(t)=\sqrt{x(t)^2+y(t)^2}-1$ velja
+$\phi(t)=e(t)(\sqrt{x(t)^2+y(t)^2}+1)$, zato je pri majhnih odstopanjih
+$|e(t)|\approx|\phi(t)|/2$.
+
+Druga mera je vsota absolutnih radialnih odstopanj v vseh testnih točkah:
+\begin{equation}
+  S_N=\sum_{i=0}^{N-1}
+      \left|\sqrt{x_i^2+y_i^2}-1\right|.
+  \label{eq:uvod-vsota}
+\end{equation}
+Absolutne vrednosti preprečijo izničenje odstopanj znotraj in zunaj
+krožnice. Vsote ne normiramo s številom vzorcev, zato je njena vrednost
+odvisna tudi od $N$. Za primerljivost pri vseh metodah uporabimo enako
+število testnih točk in iste kotne širine lokov.
+
+Tretja mera primerja ploščino odseka, omejenega z aproksimacijskim lokom
+in daljico med njegovima krajiščema, s ploščino ustreznega krožnega
+odseka enotske krožnice. Zaporedne vzorčene točke povežemo z daljicami
+in zadnjo točko povežemo s prvo. Ploščino tako dobljenega enostavnega
+mnogokotnika izračunamo po formuli
+\begin{equation}
+  P_N=\frac{1}{2}\left|
+      \sum_{i=0}^{N-2}(x_i y_{i+1}-x_{i+1}y_i)
+      +x_{N-1}y_0-x_0y_{N-1}\right|.
+  \label{eq:uvod-ploscina}
+\end{equation}
+S tem dobimo približek ploščine odseka pod Bézierjevim lokom.
+Za krožni lok kotne širine $\theta\in(0,2\pi)$, izražene v radianih,
+je točna ploščina krožnega odseka
+\begin{equation}
+  P_{\mathrm{krog}}=\frac{\theta-\sin\theta}{2}.
+\end{equation}
+Ploščinsko napako nato definiramo kot
+\begin{equation}
+  E_N^{\mathrm{pl}}=\left|P_N-P_{\mathrm{krog}}\right|.
+\end{equation}
+Ta mera primerja skupni ploščini, zato se lahko lokalna odstopanja
+navznoter in navzven pri njej izničijo. Vsebuje tudi napako nadomestitve
+krivulje z mnogokotnikom, ki jo zmanjšujemo z gostejšim vzorčenjem.
+
+Osnovni gradnik naše aproksimacije je kubična Bézierjeva krivulja
+\begin{equation}
+  \mathbf{p}(t)=(1-t)^3\mathbf{b}_0
+      +3t(1-t)^2\mathbf{b}_1
+      +3t^2(1-t)\mathbf{b}_2+t^3\mathbf{b}_3,
+  \qquad t\in[0,1],
+\end{equation}
+kjer so $\mathbf{b}_0,\ldots,\mathbf{b}_3\in\mathbb{R}^2$ kontrolne
+točke. Krivulja poteka skozi krajiščni točki,
+$\mathbf{p}(0)=\mathbf{b}_0$ in $\mathbf{p}(1)=\mathbf{b}_3$,
+njena krajiščna odvoda pa sta
+\begin{equation}
+  \begin{aligned}
+    \mathbf{p}'(0)&=3(\mathbf{b}_1-\mathbf{b}_0), &
+    \mathbf{p}'(1)&=3(\mathbf{b}_3-\mathbf{b}_2),\\
+    \mathbf{p}''(0)&=6(\mathbf{b}_2-2\mathbf{b}_1+\mathbf{b}_0), &
+    \mathbf{p}''(1)&=6(\mathbf{b}_3-2\mathbf{b}_2+\mathbf{b}_1).
+  \end{aligned}
+\end{equation}
+Prva in zadnja stranica kontrolnega poligona tako določata krajiščni
+tangenti, prve tri oziroma zadnje tri kontrolne točke pa tudi
+ukrivljenost v krajiščih.
+
+Za gladko spajanje dveh regularnih odsekov $\mathbf{p}$ in $\mathbf{q}$,
+parametriziranih na $[0,1]$, zahtevamo geometrijsko zveznost reda $G^2$.
+Pri skladni orientaciji jo izrazimo s pogoji
+\begin{equation}
+  \begin{aligned}
+    \mathbf{p}(1)&=\mathbf{q}(0),\\
+    \mathbf{p}'(1)&=\lambda\mathbf{q}'(0),\\
+    \mathbf{p}''(1)&=\lambda^2\mathbf{q}''(0)
+                     +\mu\mathbf{q}'(0),
+  \end{aligned}
+  \qquad \lambda>0,\quad \mu\in\mathbb{R}.
+\end{equation}
+Ti pogoji zagotavljajo skupno krajišče, enako tangentno smer in enako
+predznačeno ukrivljenost. 
+Če je $\lambda=1$, se ujemata tudi velikosti tangentnih vektorjev in
+je spoj $C^1$-zvezen. Zveznost $G^2$ dopušča člen
+$\mu\mathbf{q}'(0)$, zato ne zahteva enakosti drugih odvodov.
+
+Konstrukcijo metod v nadaljevanju postavimo za lok enotske krožnice
+\begin{equation}
+  \mathbf{c}(\varphi)=(\cos\varphi,\sin\varphi),
+  \qquad \varphi\in[0,\theta],
+\end{equation}
+kjer je $\theta$ kotna širina loka. Družino kubičnih odsekov
+določimo s kontrolnimi točkami
+\begin{equation}
+  \begin{aligned}
+    \mathbf{b}_0&=(1,0), &
+    \mathbf{b}_1&=(1,L),\\
+    \mathbf{b}_2&=(\cos\theta+L\sin\theta,
+                   \sin\theta-L\cos\theta), &
+    \mathbf{b}_3&=(\cos\theta,\sin\theta).
+  \end{aligned}
+\end{equation}
+Prosti parameter $L>0$ je skupna dolžina obeh krajiščnih robov
+kontrolnega poligona. Z izbiro teh točk dobimo interpolacijske pogoje
+\begin{equation}
+  \begin{aligned}
+    \mathbf{p}(0)&=\mathbf{c}(0), &
+    \mathbf{p}(1)&=\mathbf{c}(\theta),\\
+    \mathbf{p}'(0)&=3L\mathbf{c}'(0), &
+    \mathbf{p}'(1)&=3L\mathbf{c}'(\theta).
+  \end{aligned}
+\end{equation}
+Krivulja torej interpolira krajišči in tangentni smeri krožnega loka.
+
+Cilj je primerjati dane metode, ki podajajo  $L$ kot funkcijo parametra $\theta$ glede na 
+zgoraj omenjene mere napake.
 
 \section{Matematične osnove}
 \label{sec:osnove}
@@ -96,10 +229,10 @@ Krožni lok s središčem v izhodišču in polmerom $R>0$ opišemo kot
 % Povzemite ugotovitve, omejitve metode in možnosti nadaljnjega dela.
 
 \begin{thebibliography}{9}
-% Vzorec zapisa (odkomentirajte in dopolnite s preverjenimi podatki):
-% \bibitem{izhodišče}
-% Avtorji, \emph{Good approximation of circles by curvature-continuous
-% Bézier curves}, revija, letnik, strani, leto. DOI.
+\bibitem{dokken1990}
+T.~Dokken, M.~Dæhlen, T.~Lyche in K.~Mørken,
+\emph{Good approximation of circles by curvature-continuous Bézier curves},
+Computer Aided Geometric Design \textbf{7} (1990), 33--41.
 \end{thebibliography}
 
 \end{document}
